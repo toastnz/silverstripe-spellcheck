@@ -1,5 +1,7 @@
 # Spellcheck for SilverStripe
 
+[![Build Status](https://travis-ci.org/silverstripe-labs/silverstripe-spellcheck.svg?branch=master)](https://travis-ci.org/silverstripe-labs/silverstripe-spellcheck)
+
 Improves spellcheck support for SilverStripe CMS, including an implementation for HunSpell.
 
 ## Installation
