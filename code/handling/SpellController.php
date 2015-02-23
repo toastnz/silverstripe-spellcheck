@@ -130,7 +130,10 @@ class SpellController extends Controller {
 		// Check security token
 		if(self::config()->enable_security_token && !SecurityToken::inst()->checkRequest($this->request)) {
 			return $this->error(
-				_t(__CLASS__.'.SecurityMissing', 'Your session has expired. Please refresh your browser to continue.'),
+				_t(
+					'SpellController.SecurityMissing',
+					'Your session has expired. Please refresh your browser to continue.'
+				),
 				400
 			);
 		}
@@ -138,31 +141,31 @@ class SpellController extends Controller {
 		// Check permission
 		$permission = self::config()->required_permission;
 		if($permission && !Permission::check($permission)) {
-			return $this->error(_t(__CLASS__.'.SecurityDenied', 'Permission Denied'), 403);
+			return $this->error(_t('SpellController.SecurityDenied', 'Permission Denied'), 403);
 		}
 
 		// Check data
 		$data = $this->getRequestData();
 		if(empty($data)) {
-			return $this->error(_t(__CLASS__.'.MissingData', "Could not get raw post data"), 400);
+			return $this->error(_t('SpellController.MissingData', "Could not get raw post data"), 400);
 		}
 
 		// Check params and request type
 		if(!Director::is_ajax() || empty($data['method']) || empty($data['params']) || count($data['params']) < 2) {
-			return $this->error(_t(__CLASS__.'.InvalidRequest', 'Invalid request'), 400);
+			return $this->error(_t('SpellController.InvalidRequest', 'Invalid request'), 400);
 		}
 
 		// Check locale
 		$params = $data['params'];
 		$locale = $params[0];
 		if(!in_array($locale, self::get_locales())) {
-			return $this->error(_t(__CLASS__.'.InvalidLocale', 'Not supported locale'), 400);
+			return $this->error(_t('SpellController.InvalidLocale', 'Not supported locale'), 400);
 		}
 
 		// Check provider
 		$provider = $this->getProvider();
 		if(empty($provider)) {
-			return $this->error(_t(__CLASS__.'.MissingProviders', "No spellcheck module installed"), 500);
+			return $this->error(_t('SpellController.MissingProviders', "No spellcheck module installed"), 500);
 		}
 
 		// Perform action
@@ -177,7 +180,7 @@ class SpellController extends Controller {
 				default:
 					return $this->error(
 						_t(
-							__CLASS__.'.UnsupportedMethod',
+							'SpellController.UnsupportedMethod',
 							"Unsupported method '{method}'",
 							array('method' => $method)
 						),
