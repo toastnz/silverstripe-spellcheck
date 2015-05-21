@@ -1,13 +1,19 @@
 <?php
 
-if (class_exists('Phockito')) Phockito::include_hamcrest();
-
 /**
  * Tests the {@see SpellController} class
  */
 class SpellControllerTest extends FunctionalTest {
 
 	protected $securityWasEnabled = false;
+
+	public function setUpOnce() {
+		if (class_exists('Phockito')) {
+			Phockito::include_hamcrest();
+		}
+		
+		parent::setUpOnce();
+	}
 
 	public function setUp() {
 		parent::setUp();
