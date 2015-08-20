@@ -1,0 +1,3 @@
+id:
+  SpellController:
+    InvalidRequest: 'Permintaan tidak valid'

@@ -1,0 +1,8 @@
+de:
+  SpellController:
+    InvalidLocale: 'Nicht unterstützte Sprachumgebung'
+    InvalidRequest: 'Ungültige Anfrage'
+    MissingProviders: 'Kein Rechtschreibprüfungsmodul installiert'
+    SecurityDenied: 'Zugriff verweigert'
+    SecurityMissing: 'Ihre Sitzung ist abgelaufen. Bitte aktualisieren Sie Ihren Browser, um fortzufahren.'
+    UnsupportedMethod: 'Nicht unterstützte Methode ''{method}'''
