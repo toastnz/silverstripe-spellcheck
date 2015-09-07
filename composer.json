@@ -2,7 +2,7 @@
 	"name": "silverstripe/spellcheck",
 	"description": "Improves spellcheck support for SilverStripe CMS, including an implementation for HunSpell.",
 	"type": "silverstripe-module",
-	"keywords": ["silverstripe", "spellcheck", "hunspell"],
+	"keywords": ["silverstripe", "spellcheck", "hunspell", "cwp"],
 	"license": "BSD-3-Clause",
 	"authors": [
 		{
