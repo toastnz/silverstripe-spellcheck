@@ -1,7 +1,13 @@
 language: php 
 
-before_install:
-  - sudo apt-get install hunspell libhunspell-dev hunspell-en-us
+sudo: false
+
+addons:
+  apt:
+    packages:
+    - hunspell
+    - libhunspell-dev
+    - hunspell-en-us
 
 php: 
  - 5.3
