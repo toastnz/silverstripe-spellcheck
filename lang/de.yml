@@ -2,6 +2,7 @@ de:
   SpellController:
     InvalidLocale: 'Nicht unterstützte Sprachumgebung'
     InvalidRequest: 'Ungültige Anfrage'
+    MissingData: 'Konnte unverarbeitete Daten nicht laden'
     MissingProviders: 'Kein Rechtschreibprüfungsmodul installiert'
     SecurityDenied: 'Zugriff verweigert'
     SecurityMissing: 'Ihre Sitzung ist abgelaufen. Bitte aktualisieren Sie Ihren Browser, um fortzufahren.'
