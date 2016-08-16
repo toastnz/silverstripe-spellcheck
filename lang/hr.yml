@@ -1,0 +1,9 @@
+hr:
+  SpellController:
+    InvalidLocale: 'Nema podržanih lokalnih postavki'
+    InvalidRequest: 'Neispravan zahtjev'
+    MissingData: 'Ne mogu dobiti podatke zapisa'
+    MissingProviders: 'Modul spellcheck nije instaliran'
+    SecurityDenied: 'Pristup odbijen'
+    SecurityMissing: 'Vaša sesija je istekla. Molimo osvježite vaš browser za nastavak.'
+    UnsupportedMethod: 'Nepodržana metoda ''{method}'''
