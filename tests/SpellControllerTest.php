@@ -3,9 +3,9 @@
 /**
  * Tests the {@see SpellController} class
  */
-class SpellControllerTest extends FunctionalTest 
+class SpellControllerTest extends FunctionalTest {
     
-    protected $usesDatabase = null;
+	protected $usesDatabase = true;
 
 	protected $securityWasEnabled = false;
 
