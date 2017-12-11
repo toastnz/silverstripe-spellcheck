@@ -25,7 +25,7 @@ class SpellRequestFilter implements RequestFilter
         // Check languages to set
         $languages = [];
         foreach (SpellController::get_locales() as $locale) {
-            $languages[] = i18n::get_locale_name($locale) . '=' . $locale;
+            $languages[] = i18n::getData()->localeName($locale) . '=' . $locale;
         }
 
 
