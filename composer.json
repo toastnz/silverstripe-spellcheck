@@ -29,10 +29,8 @@
             "SilverStripe\\SpellCheck\\Tests\\": "tests/"
         }
     },
-    "extra": 
-    {
-        "branch-alias": 
-        {
+    "extra": {
+        "branch-alias": {
             "dev-master": "2.x-dev"
         }
     },
