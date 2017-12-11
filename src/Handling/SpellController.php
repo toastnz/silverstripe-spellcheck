@@ -144,7 +144,9 @@ class SpellController extends Controller
         $this->setHeaders();
 
         // Check security token
-        if (self::config()->get('enable_security_token ') && !SecurityToken::inst()->checkRequest($this->request)) {
+        if ($this->config()->get('enable_security_token')
+            && !SecurityToken::inst()->checkRequest($this->request)
+        ) {
             return $this->error(
                 _t(
                     __CLASS__ . '.SecurityMissing',
