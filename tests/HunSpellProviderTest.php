@@ -1,5 +1,10 @@
 <?php
 
+namespace SilverStripe\SpellCheck\Tests;
+
+use SilverStripe\SpellCheck\Providers\HunSpellProvider;
+use SilverStripe\Dev\SapphireTest;
+
 /**
  * Tests the {@see HunSpellProvider} class
  */

@@ -1,20 +1,23 @@
 ---
 Name: spellcheckroutes
 ---
-Director:
+SilverStripe\Control\Director:
   rules:
-    'spellcheck': 'SpellController'
+    spellcheck: SilverStripe\SpellCheck\Handling\SpellController
+
 ---
 Name: spellcheckprovider
 ---
 # Set the default provider to HunSpell
-Injector:
-  SpellProvider: HunSpellProvider
+SilverStripe\Core\Injector\Injector:
+  SilverStripe\SpellCheck\Data\SpellProvider:
+    class: SilverStripe\SpellCheck\Providers\HunSpellProvider
+
 ---
 Name: spellcheckprocessors
 ---
-Injector:
-  RequestProcessor:
+SilverStripe\Core\Injector\Injector:
+  SilverStripe\Control\RequestProcessor:
     properties:
       filters:
-        - '%$SpellRequestFilter'
+        - '%$SilverStripe\SpellCheck\Handling\SpellRequestFilter'

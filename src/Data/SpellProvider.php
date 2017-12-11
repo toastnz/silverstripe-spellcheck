@@ -1,8 +1,9 @@
 <?php
 
+namespace SilverStripe\SpellCheck\Data;
+
 interface SpellProvider
 {
-
     /**
      * Spellchecks an array of words.
      *

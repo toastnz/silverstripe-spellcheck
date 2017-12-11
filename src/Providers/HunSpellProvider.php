@@ -1,11 +1,16 @@
 <?php
 
+namespace SilverStripe\SpellCheck\Providers;
+
+use SilverStripe\Core\Config\Config;
+use SilverStripe\SpellCheck\Data\SpellProvider;
+use SilverStripe\SpellCheck\Handling\SpellException;
+
 /**
  * Implements spellcheck using the hunspell library
  */
 class HunSpellProvider implements SpellProvider
 {
-
     /**
      * See https://gist.github.com/sebskuse/1244667
      *
@@ -13,7 +18,6 @@ class HunSpellProvider implements SpellProvider
      * @config
      */
     private static $pattern = "/^(?P<type>&)\s(?P<original>\w+)\s(?P<count>\d+)\s(?P<offset>\d+):\s(?P<misses>.*+)$/u";
-
 
     /**
      * Invoke hunspell library

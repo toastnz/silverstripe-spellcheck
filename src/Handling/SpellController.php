@@ -1,11 +1,20 @@
 <?php
 
+namespace SilverStripe\SpellCheck\Handling;
+
+use SilverStripe\Control\Controller;
+use SilverStripe\Control\Director;
+use SilverStripe\Control\HTTP;
+use SilverStripe\i18n\i18n;
+use SilverStripe\SpellCheck\Data\SpellProvider;
+use SilverStripe\Security\Permission;
+use SilverStripe\Security\SecurityToken;
+
 /**
  * Controller to handle requests for spellchecking
  */
 class SpellController extends Controller
 {
-
     /**
      * Locales to spellcheck
      *
@@ -36,9 +45,9 @@ class SpellController extends Controller
      * @var array
      * @config
      */
-    private static $dependencies = array(
-        'Provider' => '%$SpellProvider'
-    );
+    private static $dependencies = [
+        'Provider' => '%$' . SpellProvider::class,
+    ];
 
     /**
      * Spellcheck provider
@@ -135,10 +144,10 @@ class SpellController extends Controller
         $this->setHeaders();
 
         // Check security token
-        if (self::config()->enable_security_token && !SecurityToken::inst()->checkRequest($this->request)) {
+        if (self::config()->get('enable_security_token ') && !SecurityToken::inst()->checkRequest($this->request)) {
             return $this->error(
                 _t(
-                    'SpellController.SecurityMissing',
+                    __CLASS__ . '.SecurityMissing',
                     'Your session has expired. Please refresh your browser to continue.'
                 ),
                 400
@@ -148,31 +157,31 @@ class SpellController extends Controller
         // Check permission
         $permission = self::config()->required_permission;
         if ($permission && !Permission::check($permission)) {
-            return $this->error(_t('SpellController.SecurityDenied', 'Permission Denied'), 403);
+            return $this->error(_t(__CLASS__ . '.SecurityDenied', 'Permission Denied'), 403);
         }
 
         // Check data
         $data = $this->getRequestData();
         if (empty($data)) {
-            return $this->error(_t('SpellController.MissingData', "Could not get raw post data"), 400);
+            return $this->error(_t(__CLASS__ . '.MissingData', "Could not get raw post data"), 400);
         }
 
         // Check params and request type
         if (!Director::is_ajax() || empty($data['method']) || empty($data['params']) || count($data['params']) < 2) {
-            return $this->error(_t('SpellController.InvalidRequest', 'Invalid request'), 400);
+            return $this->error(_t(__CLASS__ . '.InvalidRequest', 'Invalid request'), 400);
         }
 
         // Check locale
         $params = $data['params'];
         $locale = $params[0];
         if (!in_array($locale, self::get_locales())) {
-            return $this->error(_t('SpellController.InvalidLocale', 'Not supported locale'), 400);
+            return $this->error(_t(__CLASS__ . '.InvalidLocale', 'Not supported locale'), 400);
         }
 
         // Check provider
         $provider = $this->getProvider();
         if (empty($provider)) {
-            return $this->error(_t('SpellController.MissingProviders', "No spellcheck module installed"), 500);
+            return $this->error(_t(__CLASS__ . '.MissingProviders', "No spellcheck module installed"), 500);
         }
 
         // Perform action
@@ -187,7 +196,7 @@ class SpellController extends Controller
                 default:
                     return $this->error(
                         _t(
-                            'SpellController.UnsupportedMethod',
+                            __CLASS__ . '.UnsupportedMethod',
                             "Unsupported method '{method}'",
                             array('method' => $method)
                         ),
