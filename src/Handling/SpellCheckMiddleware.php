@@ -2,6 +2,7 @@
 
 namespace SilverStripe\SpellCheck\Handling;
 
+use SilverStripe\Control\Director;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\Middleware\HTTPMiddleware;
 use SilverStripe\Core\Config\Configurable;
@@ -28,12 +29,13 @@ class SpellCheckMiddleware implements HTTPMiddleware
         HTMLEditorConfig::get($editor)->enablePlugins('spellchecker');
         HTMLEditorConfig::get($editor)->addButtonsToLine(2, 'spellchecker');
         $token = SecurityToken::inst();
-        HTMLEditorConfig::get($editor)->setOption('spellchecker_rpc_url', $token->addToUrl('spellcheck/'));
-        HTMLEditorConfig::get($editor)->setOption('browser_spellcheck', false);
-        HTMLEditorConfig::get($editor)->setOption(
-            'spellchecker_languages',
-            '+'.implode(', ', $this->getLanguages())
-        );
+        HTMLEditorConfig::get($editor)
+            ->setOption('spellchecker_rpc_url', Director::absoluteURL($token->addToUrl('spellcheck/')))
+            ->setOption('browser_spellcheck', false)
+            ->setOption(
+                'spellchecker_languages',
+                implode(',', $this->getLanguages())
+            );
 
         return $delegate($request);
     }
@@ -41,7 +43,7 @@ class SpellCheckMiddleware implements HTTPMiddleware
     /**
      * Check languages to set
      *
-     * @return array
+     * @return string[]
      */
     public function getLanguages()
     {

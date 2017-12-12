@@ -99,26 +99,20 @@ class SpellController extends Controller
     /**
      * Parse the output response
      *
-     * @param string $id Request ID
      * @param array|null $result Result data
      * @param array|null $error Error data
      * @param int $code HTTP Response code
      */
-    protected function result($id, $result, $error = null, $code = 200)
+    protected function result($result, $code = 200)
     {
         $this->response->setStatusCode($code);
-        $this->response->setBody(json_encode(array(
-            'id' => $id ? preg_replace('/\W/', '', $id) : null, // Cleanup id
-            'result' => $result,
-            'error' => $error
-        )));
+        $this->response->setBody(json_encode($result));
         return $this->response;
     }
 
     protected function success($result)
     {
-        $data = $this->getRequestData();
-        return $this->result($data['id'], $result);
+        return $this->result($result);
     }
 
     /**
@@ -129,14 +123,11 @@ class SpellController extends Controller
      */
     protected function error($message, $code)
     {
-        $error = array(
-            'errstr' => $message,
-            'errfile' => '',
-            'errline' => null,
-            'errcontext' => '',
-            'level' => 'FATAL'
-        );
-        return $this->result(null, null, $error, $code);
+        $error = [
+            'error' => $message,
+        ];
+
+        return $this->result($error, $code);
     }
 
     public function index()
@@ -169,13 +160,16 @@ class SpellController extends Controller
         }
 
         // Check params and request type
-        if (!Director::is_ajax() || empty($data['method']) || empty($data['params']) || count($data['params']) < 2) {
+        if (!Director::is_ajax() || empty($data['method']) || empty($data['lang'])) {
             return $this->error(_t(__CLASS__ . '.InvalidRequest', 'Invalid request'), 400);
         }
 
         // Check locale
-        $params = $data['params'];
-        $locale = $params[0];
+        $locale = $data['lang'];
+
+        // Check if the locale is actually a language
+        $locale = i18n::getData()->localeFromLang($locale);
+
         if (!in_array($locale, self::get_locales())) {
             return $this->error(_t(__CLASS__ . '.InvalidLocale', 'Not supported locale'), 400);
         }
@@ -189,12 +183,10 @@ class SpellController extends Controller
         // Perform action
         try {
             $method = $data['method'];
-            $words = $params[1];
+            $words = explode(' ', $data['text']);
             switch ($method) {
-                case 'checkWords':
-                    return $this->success($provider->checkWords($locale, $words));
-                case 'getSuggestions':
-                    return $this->success($provider->getSuggestions($locale, $words));
+                case 'spellcheck':
+                    return $this->success($this->assembleData($locale, $words));
                 default:
                     return $this->error(
                         _t(
@@ -208,6 +200,29 @@ class SpellController extends Controller
         } catch (SpellException $ex) {
             return $this->error($ex->getMessage(), $ex->getCode());
         }
+    }
+
+    /**
+     * Assemble an output data structure that is expected for TinyMCE 4
+     *
+     * @see https://www.tinymce.com/docs/plugins/spellchecker/#spellcheckerresponseformat
+     *
+     * @param string $locale
+     * @param string[] $words
+     * @return array
+     */
+    protected function assembleData($locale, $words)
+    {
+        $result = [
+            'words' => [],
+        ];
+
+        $misspelledWords = $this->getProvider()->checkWords($locale, $words);
+        foreach ($misspelledWords as $word) {
+            $result['words'][$word] = $this->getProvider()->getSuggestions($locale, $word);
+        }
+
+        return $result;
     }
 
     /**
@@ -234,9 +249,7 @@ class SpellController extends Controller
         // Check if data needs to be parsed
         if ($this->data === null) {
             // Parse data from input
-            $result = $this->request->requestVar('json_data')
-                ?: file_get_contents("php://input");
-            $this->data = $result ? json_decode($result, true) : array();
+            $this->data = $this->request->postVars();
         }
         return $this->data;
     }
