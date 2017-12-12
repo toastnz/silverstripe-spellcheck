@@ -1,5 +1,5 @@
 de:
-  SpellController:
+  SilverStripe\SpellCheck\Handling\SpellController:
     InvalidLocale: 'Nicht unterstützte Sprachumgebung'
     InvalidRequest: 'Ungültige Anfrage'
     MissingData: 'Konnte unverarbeitete Daten nicht laden'

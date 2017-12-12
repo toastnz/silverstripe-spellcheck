@@ -1,5 +1,5 @@
 en:
-  SpellController:
+  SilverStripe\SpellCheck\Handling\SpellController:
     InvalidLocale: 'Not supported locale'
     InvalidRequest: 'Invalid request'
     MissingData: 'Could not get raw post data'
