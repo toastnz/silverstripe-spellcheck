@@ -17,7 +17,7 @@ SilverStripe\Core\Injector\Injector:
 Name: spellcheckprocessors
 ---
 SilverStripe\Core\Injector\Injector:
-  SilverStripe\Control\RequestProcessor:
+  SilverStripe\Control\Director:
     properties:
-      filters:
-        - '%$SilverStripe\SpellCheck\Handling\SpellRequestFilter'
+      Middlewares:
+        SpellCheckMiddleware: '%$SilverStripe\SpellCheck\Handling\SpellCheckMiddleware'
