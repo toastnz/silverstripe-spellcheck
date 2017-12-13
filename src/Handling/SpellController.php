@@ -165,12 +165,8 @@ class SpellController extends Controller
         }
 
         // Check locale
-        $locale = $data['lang'];
-
-        // Check if the locale is actually a language
-        $locale = i18n::getData()->localeFromLang($locale);
-
-        if (!in_array($locale, self::get_locales())) {
+        $locale = $this->getLocale($data);
+        if (!$locale) {
             return $this->error(_t(__CLASS__ . '.InvalidLocale', 'Not supported locale'), 400);
         }
 
@@ -252,5 +248,27 @@ class SpellController extends Controller
             $this->data = $this->request->postVars();
         }
         return $this->data;
+    }
+
+    /**
+     * Get the locale from the provided "lang" argument, which could be either a language code or locale
+     *
+     * @param array $data
+     * @return string|false
+     */
+    protected function getLocale(array $data)
+    {
+        $locale = $data['lang'];
+
+        // Check if the locale is actually a language
+        if (strpos($locale, '_') === false) {
+            $locale = i18n::getData()->localeFromLang($locale);
+        }
+
+        if (!in_array($locale, self::get_locales())) {
+            return false;
+        }
+
+        return $locale;
     }
 }

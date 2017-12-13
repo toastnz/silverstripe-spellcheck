@@ -119,6 +119,55 @@ class SpellControllerTest extends FunctionalTest
     }
 
     /**
+     * @param string $lang
+     * @param int $expectedStatusCode
+     * @dataProvider langProvider
+     */
+    public function testBothLangAndLocaleInputResolveToLocale($lang, $expectedStatusCode)
+    {
+        $this->logInWithPermission('ADMIN');
+        Config::modify()->set(SpellController::class, 'enable_security_token', false);
+
+        $mockData = [
+            'ajax' => true,
+            'method' => 'spellcheck',
+            'lang' => $lang,
+            'text' => 'Collor is everywhere',
+        ];
+        $response = $this->post('spellcheck', $mockData);
+        $this->assertEquals($expectedStatusCode, $response->getStatusCode());
+    }
+
+    /**
+     * @return array[]
+     */
+    public function langProvider()
+    {
+        return [
+            'english_language' => [
+                'en', // assumes en_US is the default locale for "en" language
+                200,
+            ],
+            'english_locale' => [
+                'en_NZ',
+                200,
+            ],
+            'invalid_language' => [
+                'ru',
+                400,
+            ],
+            'other_valid_language' => [
+                'fr', // assumes fr_FR is the default locale for "en" language
+                200,
+            ],
+            'other_valid_locale' => [
+                'fr_FR',
+                200,
+            ],
+        ];
+    }
+
+    /**
      * Ensure that invalid input is correctly rejected
      */
     public function testInputRejection()
