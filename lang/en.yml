@@ -1,6 +1,6 @@
 en:
   SilverStripe\SpellCheck\Handling\SpellController:
-    InvalidLocale: 'Not supported locale'
+    InvalidLocale: 'Not a supported locale'
     InvalidRequest: 'Invalid request'
     MissingData: 'Could not get raw post data'
     MissingProviders: 'No spellcheck module installed'

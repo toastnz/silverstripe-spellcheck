@@ -30,8 +30,11 @@ class SpellControllerTest extends FunctionalTest
         // Reset config
         Config::modify()->set(SpellController::class, 'required_permission', 'CMS_ACCESS_CMSMain');
         Config::inst()->remove(SpellController::class, 'locales');
-        Config::modify()->set(SpellController::class, 'locales', array('en_US', 'en_NZ', 'fr_FR'));
-        Config::modify()->set(SpellController::class, 'enable_security_token', true);
+        Config::modify()
+            ->set(SpellController::class, 'locales', array('en_US', 'en_NZ', 'fr_FR'))
+            ->set(SpellController::class, 'enable_security_token', true)
+            ->set(SpellController::class, 'return_errors_as_ok', false);
+
         SecurityToken::enable();
 
         // Setup mock for testing provider
@@ -123,10 +126,12 @@ class SpellControllerTest extends FunctionalTest
      * @param int $expectedStatusCode
      * @dataProvider langProvider
      */
-    public function testBothLangAndLocaleInputResolveToLocale($lang, $expectedStatusCode)
+    public function testBothLangAndLocaleInputResolveToLocale($lang, $expectedStatusCode, $errorsAreOk = false)
     {
         $this->logInWithPermission('ADMIN');
-        Config::modify()->set(SpellController::class, 'enable_security_token', false);
+        Config::modify()
+            ->set(SpellController::class, 'enable_security_token', false)
+            ->set(SpellController::class, 'return_errors_as_ok', $errorsAreOk);
 
         $mockData = [
             'ajax' => true,
@@ -155,6 +160,11 @@ class SpellControllerTest extends FunctionalTest
             'invalid_language' => [
                 'ru',
                 400,
+            ],
+            'invalid_language_returned_as_ok' => [
+                'ru',
+                200,
+                true
             ],
             'other_valid_language' => [
                 'fr', // assumes fr_FR is the default locale for "en" language
@@ -204,7 +214,7 @@ class SpellControllerTest extends FunctionalTest
         $jsonBody = json_decode($response->getBody());
         $this->assertEquals(
             _t(
-                'SilverStripe\\SpellCheck\\Handling\\.UnsupportedMethod',
+                'SilverStripe\\SpellCheck\\Handling\\SpellController.UnsupportedMethod',
                 "Unsupported method '{method}'",
                 array('method' => 'validate')
             ),
@@ -227,8 +237,8 @@ class SpellControllerTest extends FunctionalTest
         $this->assertEquals(400, $response->getStatusCode());
         $jsonBody = json_decode($response->getBody());
         $this->assertEquals(_t(
-            'SilverStripe\\SpellCheck\\Handling\\.InvalidLocale',
-            'Not supported locale'
+            'SilverStripe\\SpellCheck\\Handling\\SpellController.InvalidLocale',
+            'Not a supported locale'
         ), $jsonBody->error);
     }
 }
