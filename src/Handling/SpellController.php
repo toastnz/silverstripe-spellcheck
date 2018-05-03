@@ -21,7 +21,16 @@ class SpellController extends Controller
      * @var array
      * @config
      */
-    private static $locales = array();
+    private static $locales = [];
+
+    /**
+     * Optional: define the default locale for TinyMCE instances. If not defined, the first locale in the list of
+     * available locales will be used.
+     *
+     * @var string|bool
+     * @config
+     */
+    private static $default_locale = false;
 
     /**
      * Necessary permission required to spellcheck. Set to empty or null to disable restrictions.
