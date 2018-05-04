@@ -7,6 +7,7 @@ use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\Middleware\HTTPMiddleware;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorConfig;
+use SilverStripe\Forms\HTMLEditor\TinyMCEConfig;
 use SilverStripe\i18n\i18n;
 use SilverStripe\Security\SecurityToken;
 
@@ -25,17 +26,25 @@ class SpellCheckMiddleware implements HTTPMiddleware
     public function process(HTTPRequest $request, callable $delegate)
     {
         // Set settings
-        $editor = static::config()->get('editor');
-        HTMLEditorConfig::get($editor)->enablePlugins('spellchecker');
-        HTMLEditorConfig::get($editor)->addButtonsToLine(2, 'spellchecker');
+        $editor = $this->config()->get('editor');
+
+        /** @var TinyMCEConfig $editorConfig */
+        $editorConfig = TinyMCEConfig::get($editor);
+
+        $editorConfig->enablePlugins('spellchecker');
+        $editorConfig->addButtonsToLine(2, 'spellchecker');
+
         $token = SecurityToken::inst();
-        HTMLEditorConfig::get($editor)
+
+        $editorConfig
             ->setOption('spellchecker_rpc_url', Director::absoluteURL($token->addToUrl('spellcheck/')))
             ->setOption('browser_spellcheck', false)
-            ->setOption(
-                'spellchecker_languages',
-                implode(',', $this->getLanguages())
-            );
+            ->setOption('spellchecker_languages', implode(',', $this->getLanguages()));
+
+        $defaultLocale = $this->getDefaultLocale();
+        if ($defaultLocale) {
+            $editorConfig->setOption('spellchecker_language', $defaultLocale);
+        }
 
         return $delegate($request);
     }
@@ -52,5 +61,26 @@ class SpellCheckMiddleware implements HTTPMiddleware
             $languages[] = i18n::getData()->localeName($locale) . '=' . $locale;
         }
         return $languages;
+    }
+
+    /**
+     * Returns the default locale for TinyMCE. Either via configuration or the first in the list of locales.
+     *
+     * @return string|false
+     */
+    public function getDefaultLocale()
+    {
+        // Check configuration first
+        $defaultLocale = SpellController::config()->get('default_locale');
+        if ($defaultLocale) {
+            return $defaultLocale;
+        }
+
+        // Grab the first one in the list
+        $locales = SpellController::get_locales();
+        if (empty($locales)) {
+            return false;
+        }
+        return reset($locales);
     }
 }

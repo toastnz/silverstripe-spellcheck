@@ -21,7 +21,16 @@ class SpellController extends Controller
      * @var array
      * @config
      */
-    private static $locales = array();
+    private static $locales = [];
+
+    /**
+     * Optional: define the default locale for TinyMCE instances. If not defined, the first locale in the list of
+     * available locales will be used.
+     *
+     * @var string|bool
+     * @config
+     */
+    private static $default_locale = false;
 
     /**
      * Necessary permission required to spellcheck. Set to empty or null to disable restrictions.
@@ -38,6 +47,14 @@ class SpellController extends Controller
      * @config
      */
     private static $enable_security_token = true;
+
+    /**
+     * If true, all error messages will be returned with a 200 OK HTTP header code
+     *
+     * @var bool
+     * @config
+     */
+    private static $return_errors_as_ok = false;
 
     /**
      * Dependencies required by this controller
@@ -81,7 +98,7 @@ class SpellController extends Controller
     public static function get_locales()
     {
         // Default to current locale if none configured
-        return self::config()->locales ?: array(i18n::get_locale());
+        return self::config()->get('locales') ?: array(i18n::get_locale());
     }
 
     /**
@@ -116,18 +133,19 @@ class SpellController extends Controller
     }
 
     /**
-     * Set the error
+     * Set the error.
      *
      * @param string $message
      * @param int $code HTTP error code
      */
     protected function error($message, $code)
     {
-        $error = [
-            'error' => $message,
-        ];
+        // Some clients may require errors to be returned with a 200 OK header code
+        if ($this->config()->get('return_errors_as_ok')) {
+            $code = 200;
+        }
 
-        return $this->result($error, $code);
+        return $this->result(['error' => $message], $code);
     }
 
     public function index()
@@ -167,7 +185,7 @@ class SpellController extends Controller
         // Check locale
         $locale = $this->getLocale($data);
         if (!$locale) {
-            return $this->error(_t(__CLASS__ . '.InvalidLocale', 'Not supported locale'), 400);
+            return $this->error(_t(__CLASS__ . '.InvalidLocale', 'Not a supported locale'), 400);
         }
 
         // Check provider
