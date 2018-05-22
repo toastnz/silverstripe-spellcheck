@@ -58,7 +58,10 @@ class SpellCheckMiddleware implements HTTPMiddleware
     {
         $languages = [];
         foreach (SpellController::get_locales() as $locale) {
-            $languages[] = i18n::getData()->localeName($locale) . '=' . $locale;
+            $localeName = i18n::getData()->localeName($locale);
+            // Fix incorrectly spelled Māori language
+            $localeName = str_replace('Maori', 'Māori', $localeName);
+            $languages[] = $localeName . '=' . $locale;
         }
         return $languages;
     }
