@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @deprecated 1.1 Use SpellCheckAdminExtension instead
+ */
 class SpellRequestFilter implements RequestFilter {
 
 	/**
@@ -11,21 +14,6 @@ class SpellRequestFilter implements RequestFilter {
 	private static $editor = 'cms';
 
 	public function preRequest(\SS_HTTPRequest $request, \Session $session, \DataModel $model) {
-		// Check languages to set
-		$languages = array();
-		foreach(SpellController::get_locales() as $locale) {
-			$languages[] = i18n::get_locale_name($locale).'='.$locale;
-		}
-
-
-		// Set settings
-		$editor = Config::inst()->get(__CLASS__, 'editor');
-		HtmlEditorConfig::get($editor)->enablePlugins('spellchecker');
-		HtmlEditorConfig::get($editor)->addButtonsToLine(2, 'spellchecker');
-		$token = SecurityToken::inst();
-		HtmlEditorConfig::get($editor)->setOption('spellchecker_rpc_url', $token->addToUrl('spellcheck/'));
-		HtmlEditorConfig::get($editor)->setOption('browser_spellcheck', false);
-		HtmlEditorConfig::get($editor)->setOption('spellchecker_languages', '+'.implode(', ', $languages));
 		return true;
 	}
 

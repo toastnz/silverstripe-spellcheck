@@ -13,8 +13,6 @@ Injector:
 ---
 Name: spellcheckprocessors
 ---
-Injector:
-  RequestProcessor:
-    properties:
-      filters:
-        - '%$SpellRequestFilter'
+LeftAndMain:
+  extensions:
+    SpellCheckAdminExtension: SpellCheckAdminExtension
