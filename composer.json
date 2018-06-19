@@ -23,9 +23,5 @@
         "hafriedlander/silverstripe-phockito": "*",
         "phpunit/PHPUnit": "~3.7@stable"
     },
-    "extra": {
-        "branch-alias": {
-            "1.x-dev": "1.1.x-dev"
-        }
-    }
+    "extra": []
 }
