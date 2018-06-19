@@ -197,8 +197,13 @@ class SpellController extends Controller {
 	 */
 	protected function setHeaders() {
 		// Set headers
-		HTTP::set_cache_age(0);
-		HTTP::add_cache_headers($this->response);
+        if (class_exists('HTTPCacheControl')) {
+            HTTPCacheControl::singleton()->disableCache();
+        } else {
+            HTTP::set_cache_age(0);
+            HTTP::add_cache_headers($this->response);
+        }
+
 		$this->response
 			->addHeader('Content-Type', 'application/json')
 			->addHeader('Content-Encoding', 'UTF-8')
