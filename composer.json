@@ -21,7 +21,7 @@
     },
     "require-dev": {
         "hafriedlander/silverstripe-phockito": "*",
-        "phpunit/PHPUnit": "~3.7@stable"
+        "phpunit/phpunit": "^5.7"
     },
     "extra": []
 }
