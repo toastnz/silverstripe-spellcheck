@@ -1,0 +1,9 @@
+fi:
+  SpellController:
+    InvalidLocale: 'Ei tuettu kieli'
+    InvalidRequest: 'Virheellinen pyyntö'
+    MissingData: 'Raakadataa ei voitu hakea'
+    MissingProviders: 'Oikolukumoduulia ei ole asennettu'
+    SecurityDenied: 'Käyttöoikeudet eivät riitä'
+    SecurityMissing: 'Istuntosi on vanhentunut. Jatkaaksesi, ole hyvä ja lataa sivu uudelleen.'
+    UnsupportedMethod: '''{method}'' ei ole tuettu'
