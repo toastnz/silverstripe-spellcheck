@@ -1,0 +1,9 @@
+sl:
+  SpellController:
+    InvalidLocale: 'Lokalizacija ni na voljo'
+    InvalidRequest: 'Neveljaven zahtevek'
+    MissingData: 'Neobdelanih podatkov nismo mogli pridobiti'
+    MissingProviders: 'Črkovalnik ni nameščen'
+    SecurityDenied: 'Dostop zavrnjen'
+    SecurityMissing: 'Vaša seja je potekla. Za nadaljevanje onovno naložite stran.'
+    UnsupportedMethod: 'Metoda ''{method}'' ne obstaja.'

@@ -1,5 +1,5 @@
 fa_IR:
-  SilverStripe\SpellCheck\Handling\SpellController:
+  SpellController:
     InvalidLocale: 'محل پشتیبانی نمی‌شود'
     InvalidRequest: 'درخواست نامعتبر'
     MissingData: 'قادر به دریافت داده‌های خام پست نبود'
