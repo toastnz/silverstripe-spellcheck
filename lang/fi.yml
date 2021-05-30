@@ -1,5 +1,5 @@
 fi:
-  SpellController:
+  SilverStripe\SpellCheck\Handling\SpellController:
     InvalidLocale: 'Ei tuettu kieli'
     InvalidRequest: 'Virheellinen pyyntö'
     MissingData: 'Raakadataa ei voitu hakea'

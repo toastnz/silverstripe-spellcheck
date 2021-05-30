@@ -1,5 +1,5 @@
 hr:
-  SpellController:
+  SilverStripe\SpellCheck\Handling\SpellController:
     InvalidLocale: 'Nema podržanih lokalnih postavki'
     InvalidRequest: 'Neispravan zahtjev'
     MissingData: 'Ne mogu dobiti podatke zapisa'
