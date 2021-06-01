@@ -1,5 +1,5 @@
 eo:
-  SpellController:
+  SilverStripe\SpellCheck\Handling\SpellController:
     InvalidLocale: 'Nesubtenata lokaĵaro'
     InvalidRequest: 'Nevalida peto'
     MissingData: 'Ne povis akiri krudajn afiŝajn datumojn'

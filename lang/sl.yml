@@ -1,5 +1,5 @@
 sl:
-  SpellController:
+  SilverStripe\SpellCheck\Handling\SpellController:
     InvalidLocale: 'Lokalizacija ni na voljo'
     InvalidRequest: 'Neveljaven zahtevek'
     MissingData: 'Neobdelanih podatkov nismo mogli pridobiti'
