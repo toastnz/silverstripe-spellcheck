@@ -1,5 +1,5 @@
 pl:
-  SpellController:
+  SilverStripe\SpellCheck\Handling\SpellController:
     InvalidLocale: 'Nieobsługiwane ustawienia regionalne'
     InvalidRequest: 'Nieprawidłowe żądanie'
     MissingData: 'Nie można uzyskać nieprzetworzonych danych'
