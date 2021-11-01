@@ -21,7 +21,7 @@ class SpellControllerTest extends FunctionalTest
 
     protected $securityWasEnabled = false;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -42,7 +42,7 @@ class SpellControllerTest extends FunctionalTest
         Injector::inst()->registerService($spellChecker, SpellProvider::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($this->securityWasEnabled) {
             SecurityToken::enable();
