@@ -19,7 +19,7 @@ class HunSpellProviderTest extends SapphireTest
      */
     protected function assertArrayContains($needles, $haystack)
     {
-        $overlap = array_intersect($needles, $haystack);
+        $overlap = array_intersect($needles ?? [], $haystack);
         $this->assertEquals($overlap, $needles, "Assert that array contains all values specified");
     }
 

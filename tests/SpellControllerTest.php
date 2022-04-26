@@ -73,21 +73,21 @@ class SpellControllerTest extends FunctionalTest
         // Test request sans token
         $response = $this->get('spellcheck', Injector::inst()->create(Session::class, $session));
         $this->assertEquals(400, $response->getStatusCode());
-        $jsonBody = json_decode($response->getBody());
+        $jsonBody = json_decode($response->getBody() ?? '');
         $this->assertEquals($tokenError, $jsonBody->error);
 
         // Test request with correct token (will fail with an unrelated error)
         $response = $this->get(
-            'spellcheck/?SecurityID='.urlencode($token),
+            'spellcheck/?SecurityID='.urlencode($token ?? ''),
             Injector::inst()->create(Session::class, $session)
         );
-        $jsonBody = json_decode($response->getBody());
+        $jsonBody = json_decode($response->getBody() ?? '');
         $this->assertNotEquals($tokenError, $jsonBody->error);
 
         // Test request with check disabled
         Config::modify()->set(SpellController::class, 'enable_security_token', false);
         $response = $this->get('spellcheck', Injector::inst()->create(Session::class, $session));
-        $jsonBody = json_decode($response->getBody());
+        $jsonBody = json_decode($response->getBody() ?? '');
         $this->assertNotEquals($tokenError, $jsonBody->error);
     }
 
@@ -104,20 +104,20 @@ class SpellControllerTest extends FunctionalTest
         Config::modify()->set(SpellController::class, 'required_permission', 'ADMIN');
         $this->logInWithPermission('ADMIN');
         $response = $this->get('spellcheck');
-        $jsonBody = json_decode($response->getBody());
+        $jsonBody = json_decode($response->getBody() ?? '');
         $this->assertNotEquals($securityError, $jsonBody->error);
 
         // Test insufficient permissions
         $this->logInWithPermission('CMS_ACCESS_CMSMain');
         $response = $this->get('spellcheck');
         $this->assertEquals(403, $response->getStatusCode());
-        $jsonBody = json_decode($response->getBody());
+        $jsonBody = json_decode($response->getBody() ?? '');
         $this->assertEquals($securityError, $jsonBody->error);
 
         // Test disabled permissions
         Config::modify()->set(SpellController::class, 'required_permission', false);
         $response = $this->get('spellcheck');
-        $jsonBody = json_decode($response->getBody());
+        $jsonBody = json_decode($response->getBody() ?? '');
         $this->assertNotEquals($securityError, $jsonBody->error);
     }
 
@@ -195,7 +195,7 @@ class SpellControllerTest extends FunctionalTest
         ];
         $response = $this->post('spellcheck', ['ajax' => true] + $mockData);
         $this->assertEquals(200, $response->getStatusCode());
-        $jsonBody = json_decode($response->getBody());
+        $jsonBody = json_decode($response->getBody() ?? '');
         $this->assertNotEmpty($jsonBody->words);
         $this->assertNotEmpty($jsonBody->words->collor);
         $this->assertEquals(['collar', 'colour'], $jsonBody->words->collor);
@@ -203,7 +203,7 @@ class SpellControllerTest extends FunctionalTest
         // Test non-ajax rejection
         $response = $this->post('spellcheck', $mockData);
         $this->assertEquals(400, $response->getStatusCode());
-        $jsonBody = json_decode($response->getBody());
+        $jsonBody = json_decode($response->getBody() ?? '');
         $this->assertEquals($invalidRequest, $jsonBody->error);
 
         // Test incorrect method
@@ -211,7 +211,7 @@ class SpellControllerTest extends FunctionalTest
         $dataInvalidMethod['method'] = 'validate';
         $response = $this->post('spellcheck', ['ajax' => true] + $dataInvalidMethod);
         $this->assertEquals(400, $response->getStatusCode());
-        $jsonBody = json_decode($response->getBody());
+        $jsonBody = json_decode($response->getBody() ?? '');
         $this->assertEquals(
             _t(
                 'SilverStripe\\SpellCheck\\Handling\\SpellController.UnsupportedMethod',
@@ -226,7 +226,7 @@ class SpellControllerTest extends FunctionalTest
         unset($dataNoMethod['method']);
         $response = $this->post('spellcheck', ['ajax' => true] + $dataNoMethod);
         $this->assertEquals(400, $response->getStatusCode());
-        $jsonBody = json_decode($response->getBody());
+        $jsonBody = json_decode($response->getBody() ?? '');
         $this->assertEquals($invalidRequest, $jsonBody->error);
 
         // Test unsupported locale
@@ -235,7 +235,7 @@ class SpellControllerTest extends FunctionalTest
 
         $response = $this->post('spellcheck', ['ajax' => true] + $dataWrongLocale);
         $this->assertEquals(400, $response->getStatusCode());
-        $jsonBody = json_decode($response->getBody());
+        $jsonBody = json_decode($response->getBody() ?? '');
         $this->assertEquals(_t(
             'SilverStripe\\SpellCheck\\Handling\\SpellController.InvalidLocale',
             'Not a supported locale'

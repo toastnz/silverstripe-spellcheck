@@ -31,7 +31,7 @@ class HunSpellProvider implements SpellProvider
     protected function invoke($locale, $input, &$stdout, &$stderr)
     {
         // Prepare arguments
-        $command = 'hunspell -d ' . escapeshellarg($locale);
+        $command = 'hunspell -d ' . escapeshellarg($locale ?? '');
         $descriptorSpecs = array(
             0 => array("pipe", "r"),
             1 => array("pipe", "w"),
@@ -41,13 +41,13 @@ class HunSpellProvider implements SpellProvider
             'LANG' => $locale . '.utf-8'
         );
         // Invoke command
-        $proc = proc_open($command, $descriptorSpecs, $pipes, null, $env);
+        $proc = proc_open($command ?? '', $descriptorSpecs ?? [], $pipes, null, $env);
         if (!is_resource($proc)) {
             return 255;
         }
 
         // Send content as input
-        fwrite($pipes[0], $input);
+        fwrite($pipes[0], $input ?? '');
         fclose($pipes[0]);
 
         // Get output
@@ -82,9 +82,9 @@ class HunSpellProvider implements SpellProvider
         // Parse results
         $pattern = Config::inst()->get(__CLASS__, 'pattern');
         $results = array();
-        foreach (preg_split('/$\R?^/m', $stdout) as $line) {
-            if (preg_match($pattern, $line, $matches)) {
-                $results[$matches['original']] = explode(', ', $matches['misses']);
+        foreach (preg_split('/$\R?^/m', $stdout ?? '') as $line) {
+            if (preg_match($pattern ?? '', $line ?? '', $matches)) {
+                $results[$matches['original']] = explode(', ', $matches['misses'] ?? '');
             }
         }
         return $results;
@@ -93,7 +93,7 @@ class HunSpellProvider implements SpellProvider
     public function checkWords($locale, $words)
     {
         $results = $this->getResults($locale, $words);
-        return array_keys($results);
+        return array_keys($results ?? []);
     }
 
     public function getSuggestions($locale, $word)

@@ -60,7 +60,7 @@ class SpellCheckAdminExtension extends Extension
         foreach (SpellController::get_locales() as $locale) {
             $localeName = i18n::getData()->localeName($locale);
             // Fix incorrectly spelled Māori language
-            $localeName = str_replace('Maori', 'Māori', $localeName);
+            $localeName = str_replace('Maori', 'Māori', $localeName ?? '');
             $languages[] = $localeName . '=' . $locale;
         }
         return $languages;

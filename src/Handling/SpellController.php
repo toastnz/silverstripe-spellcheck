@@ -197,7 +197,7 @@ class SpellController extends Controller
         // Perform action
         try {
             $method = $data['method'];
-            $words = explode(' ', $data['text']);
+            $words = explode(' ', $data['text'] ?? '');
             switch ($method) {
                 case 'spellcheck':
                     return $this->success($this->assembleData($locale, $words));
@@ -279,11 +279,11 @@ class SpellController extends Controller
         $locale = $data['lang'];
 
         // Check if the locale is actually a language
-        if (strpos($locale, '_') === false) {
+        if (strpos($locale ?? '', '_') === false) {
             $locale = i18n::getData()->localeFromLang($locale);
         }
 
-        if (!in_array($locale, self::get_locales())) {
+        if (!in_array($locale, self::get_locales() ?? [])) {
             return false;
         }
 
