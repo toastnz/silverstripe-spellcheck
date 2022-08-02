@@ -1,12 +1,9 @@
 # Spellcheck for SilverStripe
 
 [![CI](https://github.com/silverstripe/silverstripe-spellcheck/actions/workflows/ci.yml/badge.svg)](https://github.com/silverstripe/silverstripe-spellcheck/actions/workflows/ci.yml)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/silverstripe/silverstripe-spellcheck/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/silverstripe/silverstripe-spellcheck/?branch=master)
-[![codecov](https://codecov.io/gh/silverstripe/silverstripe-spellcheck/branch/master/graph/badge.svg)](https://codecov.io/gh/silverstripe/silverstripe-spellcheck)
-[![SilverStripe supported module](https://img.shields.io/badge/silverstripe-supported-0071C4.svg)](https://www.silverstripe.org/software/addons/silverstripe-commercially-supported-module-list/)
+[![Silverstripe supported module](https://img.shields.io/badge/silverstripe-supported-0071C4.svg)](https://www.silverstripe.org/software/addons/silverstripe-commercially-supported-module-list/)
 
-
-Improves spellcheck support for SilverStripe CMS, including an implementation for HunSpell.
+Improves spellcheck support for Silverstripe CMS, including an implementation for HunSpell.
 
 ## Installation
 
@@ -18,10 +15,10 @@ the module and extracting to the 'spellcheck' directory under your project root.
 
 ## Requirements
 
-* SilverStripe 4.0.2 or above
+* Silverstripe 4.0.2 or above
 * Hunspell
 
-**Note:** this version is compatible with SilverStripe 4. For SilverStripe 3, please see [the 1.x release line](https://github.com/silverstripe/silverstripe-spellcheck/tree/1.0).
+**Note:** this version is compatible with Silverstripe 4. For Silverstripe 3, please see [the 1.x release line](https://github.com/silverstripe/silverstripe-spellcheck/tree/1.0).
 
 ## Configuration
 
