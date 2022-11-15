@@ -2,6 +2,7 @@
 
 namespace SilverStripe\SpellCheck\Handling;
 
+use SilverStripe\Dev\Deprecation;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\Middleware\HTTPMiddleware;
 use SilverStripe\Core\Config\Configurable;
@@ -9,7 +10,7 @@ use SilverStripe\Forms\HTMLEditor\TinyMCEConfig;
 use SilverStripe\i18n\i18n;
 
 /**
- * @deprecated 2.0..3.0 Use SpellCheckAdminExtension instead
+ * @deprecated 2.0.0 Use SpellCheckAdminExtension instead
  */
 class SpellCheckMiddleware implements HTTPMiddleware
 {
@@ -22,6 +23,11 @@ class SpellCheckMiddleware implements HTTPMiddleware
      * @config
      */
     private static $editor = 'cms';
+
+    public function __construct()
+    {
+        Deprecation::notice('2.0.0', 'Use SpellCheckAdminExtension instead', Deprecation::SCOPE_CLASS);
+    }
 
     public function process(HTTPRequest $request, callable $delegate)
     {
