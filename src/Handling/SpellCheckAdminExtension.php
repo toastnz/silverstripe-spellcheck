@@ -5,6 +5,7 @@ namespace SilverStripe\SpellCheck\Handling;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Core\Extension;
+use SilverStripe\Dev\Deprecation;
 use SilverStripe\Forms\HTMLEditor\TinyMCEConfig;
 use SilverStripe\i18n\i18n;
 use SilverStripe\Security\SecurityToken;
@@ -27,8 +28,10 @@ class SpellCheckAdminExtension extends Extension
     public function init()
     {
         // Set settings (respect deprecated middleware)
-        $editor = SpellCheckMiddleware::config()->get('editor')
-            ?: static::config()->get('editor');
+        $middlewareConfig = Deprecation::withNoReplacement(function () {
+            return SpellCheckMiddleware::config()->get('editor');
+        });
+        $editor = $middlewareConfig ?: static::config()->get('editor');
 
         /** @var TinyMCEConfig $editorConfig */
         $editorConfig = TinyMCEConfig::get($editor);
