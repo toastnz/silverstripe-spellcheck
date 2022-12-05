@@ -9,6 +9,7 @@ use SilverStripe\i18n\i18n;
 use SilverStripe\SpellCheck\Data\SpellProvider;
 use SilverStripe\Security\Permission;
 use SilverStripe\Security\SecurityToken;
+use SilverStripe\Control\Middleware\HTTPCacheControlMiddleware;
 
 /**
  * Controller to handle requests for spellchecking
@@ -245,8 +246,7 @@ class SpellController extends Controller
     protected function setHeaders()
     {
         // Set headers
-        HTTP::set_cache_age(0);
-        HTTP::add_cache_headers($this->response);
+        HTTPCacheControlMiddleware::singleton()->setMaxAge(0);
         $this->response
             ->addHeader('Content-Type', 'application/json')
             ->addHeader('Content-Encoding', 'UTF-8')
